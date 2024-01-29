@@ -25,9 +25,12 @@ def get_weather():
     WEATHER_URL = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={long}&appid={WEATHER_API_KEY}&units=imperial"
     
     response = requests.get(WEATHER_URL)
-    results = response.json()
-    coverage = results['weather'][0]['description']
-    temp = results['main']['temp']
+    if response.status_code == requests.codes.ok:
+        results = response.json()
+        coverage = results['weather'][0]['description']
+        temp = results['main']['temp']
+    else:
+        print("Error:", response.status_code, response.text)
 
     print(f"Currently in {city} there are {coverage} and it is {temp}° Farenheit.")   
 
